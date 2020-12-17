@@ -20,12 +20,24 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        Log.d(TAG, "----------------")
+        Log.d(TAG, "onCreate")
+
         btn_send.setOnClickListener {
             Log.d(TAG, "Button clicked")
             val intent = Intent(this, SecondActivity::class.java)
             intent.putExtra(EXTRA_MESSAGE, edt_message.text.toString())
             startActivityForResult(intent, TEXT_REQUEST)
             Toast.makeText(this, "Second Activity", Toast.LENGTH_SHORT).show()
+        }
+
+        if (savedInstanceState != null) {
+            val isVisible = savedInstanceState.getBoolean("reply_visibility")
+            if (isVisible) {
+                txt_header_reply.visibility = View.VISIBLE
+                txt_message_reply.text = savedInstanceState.getString("reply_message")
+                txt_message_reply.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -39,4 +51,42 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        if (txt_header_reply.visibility == View.VISIBLE) {
+            outState.putBoolean("reply_visibility", true)
+            outState.putString("reply_message", txt_message_reply.text.toString())
+        }
+    }
+    override fun onStart() {
+        super.onStart()
+        Log.d(TAG, "onStart")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d(TAG, "onPause")
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+        Log.d(TAG, "onRestart")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d(TAG, "onStop")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d(TAG, "onDestroy")
+    }
+
 }
